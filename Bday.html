@@ -1,0 +1,91 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    background: #ffe6f0;
+    text-align: center;
+    overflow-x: hidden;
+}
+
+/* PASSWORD SCREEN */
+.password-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #ffccd5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.password-box {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+}
+.hidden { display: none; }
+
+/* TITLE */
+.title {
+    font-size: 2.8rem;
+    color: #e60039;
+    margin-top: 30px;
+}
+
+/* COUNTDOWN */
+.countdown {
+    margin: 20px auto;
+    font-size: 1.5rem;
+}
+#timer span {
+    font-size: 2rem;
+    color: #b3002d;
+}
+
+/* SNOOPY + HEARTS */
+.snoopy-wrapper {
+    position: relative;
+    margin: 30px auto;
+}
+
+.snoopy {
+    width: 200px;
+    transition: transform 0.3s ease;
+}
+.snoopy:hover {
+    transform: scale(1.1) rotate(-10deg);
+}
+
+/* ANIMATED HEARTS */
+.hearts {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 400px;
+    height: 200px;
+    pointer-events: none;
+}
+.hearts::after,
+.hearts::before {
+    content: "â¤ï¸";
+    position: absolute;
+    font-size: 1.8rem;
+    animation: float 3s infinite ease-in;
+}
+.hearts::after { left: 30%; animation-delay: 1s; }
+.hearts::before { left: 60%; animation-delay: 0.5s; }
+
+@keyframes float {
+    0% { opacity: 0; top: 100px; }
+    50% { opacity: 1; top: -20px; }
+    100% { opacity: 0; top: -60px; }
+}
+
+/* MESSAGE */
+.message {
+    margin-top: 20px;
+    font-size: 1.4rem;
+    color: #900030;
+}
