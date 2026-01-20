@@ -1,13 +1,147 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
-    <title>Kitten Page</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>For You — Happy Valentine's Day</title>
+
+  <!-- Curvy romantic heading + clean body font -->
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Quicksand:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
 </head>
 <body>
-    <h1>Welcome to the Kitten Page!</h1>
-    <script src="script.js"></script>
+  <div id="lockOverlay" class="overlay">
+    <div class="modal" id="loginModal">
+      <h2 class="modal-title">This page is private</h2>
+
+      <div id="setupSection" class="setup">
+        <p class="muted">Welcome! Create a password and set your relationship start date (only stored in your browser).</p>
+        <input id="setupPassword" type="password" placeholder="Create password" autocomplete="new-password" />
+        <input id="setupPasswordConfirm" type="password" placeholder="Confirm password" autocomplete="new-password" />
+        <label for="setupDate" class="muted">Relationship start date</label>
+        <input id="setupDate" type="date" />
+        <button id="setupBtn" class="btn primary">Create & Continue</button>
+      </div>
+
+      <div id="loginSection" class="hidden">
+        <p class="muted">Enter the password to view this page.</p>
+        <input id="passwordInput" type="password" placeholder="Password" />
+        <div class="row">
+          <button id="loginBtn" class="btn primary">Unlock</button>
+          <button id="showSetupBtn" class="btn">One-time setup</button>
+        </div>
+        <p id="loginError" class="error hidden">Incorrect password — try again.</p>
+      </div>
+
+      <p class="muted small">Note: password is stored as a secure hash in your browser (localStorage).</p>
+    </div>
+  </div>
+
+  <main class="container hidden" id="mainContent" aria-hidden="true">
+    <header class="header">
+      <div class="brand">
+        <img src="assets/3.jpg" alt="mascot" class="mascot" />
+        <h1 class="title">For My Love</h1>
+      </div>
+      <p class="subtitle">A little romantic surprise — just for you</p>
+    </header>
+
+    <section class="panel hero">
+      <div class="intro">
+        <h2 class="curvy">Happy Valentine's</h2>
+        <p id="loveMessage">You mean everything to me. Forever & always — happy Valentine's Day.</p>
+      </div>
+
+      <div class="counters">
+        <div class="counter">
+          <span class="num" id="daysTogether">0</span>
+          <span class="label">Days together</span>
+        </div>
+        <div class="counter">
+          <span class="num" id="countdown">0d 00:00:00</span>
+          <span class="label">Countdown to next anniversary</span>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button id="revealBtn" class="btn">Open love note</button>
+        <button id="galleryBtn" class="btn">View photos</button>
+        <button id="letterBtn" class="btn">Read letter</button>
+      </div>
+    </section>
+
+    <section id="note" class="panel hidden">
+      <h3 class="panel-title curvy">Love Note</h3>
+      <p id="noteText">I wrote this page just for you. You are my home.</p>
+    </section>
+
+    <section id="gallery" class="panel hidden">
+      <h3 class="panel-title curvy">Photos</h3>
+      <div class="photos">
+        <img src="assets/1.jpg" alt="photo 1" />
+        <img src="assets/2.jpg" alt="photo 2" />
+        <img src="assets/3.jpg" alt="mascot" />
+      </div>
+    </section>
+
+    <!-- Letter panel -->
+    <section id="letterPanel" class="panel hidden" aria-live="polite">
+      <h3 class="panel-title curvy">My Letter to You</h3>
+      <div id="letterPreview" class="letter-preview">
+        <p class="muted">You haven't written your letter yet — click "Edit letter" to add one.</p>
+      </div>
+      <div class="controls" style="margin-top:12px">
+        <button id="editLetterBtn" class="btn primary">Edit letter</button>
+        <button id="downloadLetterBtn" class="btn">Download</button>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <button id="settingsBtn" class="btn small">Settings</button>
+      <small class="muted">Made with ❤️</small>
+    </footer>
+  </main>
+
+  <!-- Letter editor modal -->
+  <div id="letterEditorOverlay" class="overlay hidden">
+    <div class="modal editor-modal" role="dialog" aria-modal="true" aria-labelledby="editorTitle">
+      <h3 id="editorTitle" class="modal-title">Edit Letter</h3>
+      <textarea id="letterTextarea" placeholder="Write your letter here..."></textarea>
+      <div class="row" style="margin-top:10px">
+        <button id="saveLetterBtn" class="btn primary">Save</button>
+        <button id="cancelLetterBtn" class="btn">Cancel</button>
+        <button id="clearLetterBtn" class="btn">Clear</button>
+      </div>
+      <p class="muted small" style="margin-top:8px">Your letter is saved only in this browser so you can edit privately. Enable remote sync in Settings if you want the same letter on multiple devices.</p>
+    </div>
+  </div>
+
+  <!-- Settings / Sync modal -->
+  <div id="settingsOverlay" class="overlay hidden">
+    <div class="modal">
+      <h3 class="modal-title">Settings</h3>
+
+      <label class="muted">Change password</label>
+      <input id="currentPassword" type="password" placeholder="Current password" />
+      <input id="newPassword" type="password" placeholder="New password" />
+      <input id="newPasswordConfirm" type="password" placeholder="Confirm new password" />
+      <label class="muted">Update relationship start date</label>
+      <input id="updateStartDate" type="date" />
+
+      <hr />
+      <h4>Remote letter sync (optional)</h4>
+      <p class="muted">You can sync the letter between devices using a GitHub Gist. Create a private gist and paste its ID here, and provide a personal access token with <code>gist</code> scope if you want the page to push updates automatically.</p>
+      <input id="gistId" type="text" placeholder="Gist ID (optional)" />
+      <input id="gistToken" type="password" placeholder="Personal access token (optional)" />
+      <label><input id="autoSync" type="checkbox" /> Enable automatic sync on save</label>
+
+      <div class="row">
+        <button id="saveSettingsBtn" class="btn primary">Save</button>
+        <button id="cancelSettingsBtn" class="btn">Cancel</button>
+      </div>
+      <p class="muted small">Tokens and gist IDs are stored only in your browser (localStorage). If you prefer not to store a token, you can manually paste letter content into other devices or use the Download button.</p>
+    </div>
+  </div>
 </body>
 </html>
